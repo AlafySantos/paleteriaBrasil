@@ -1,4 +1,4 @@
-package engSoft.controllers;
+package engSoft.paleteriaBrasil.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/produto")
+@RequestMapping("/transacao")
 @AllArgsConstructor
-public class ProdutoController {
+public class TransacaoMonetaria {
     
 }
