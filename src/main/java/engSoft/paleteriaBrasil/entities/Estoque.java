@@ -1,7 +1,7 @@
 package engSoft.paleteriaBrasil.entities;
 
 import jakarta.persistence.*;
-
+//Jonathas teve aqui
 @Entity
 public class Estoque {
 
