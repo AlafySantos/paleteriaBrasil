@@ -10,4 +10,5 @@ public class PaleteriaBrasilApplication {
 		SpringApplication.run(PaleteriaBrasilApplication.class, args);
 	}
 
+
 }
