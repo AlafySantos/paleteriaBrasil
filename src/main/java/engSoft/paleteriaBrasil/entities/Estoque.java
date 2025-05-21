@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,17 +35,31 @@ public class Estoque {
     @Column(name = "tipo_prod", length = 20)
     private String tipoProd;
 
+    @Column(name = "status_prod", length = 20)
+    private String statusProd;
+
 
     /*  --- RELACOES --- */
-   @OneToMany(mappedBy = "estoque")
-   private List<Produto> produtos;
+   @ManyToOne
+   @JoinColumn(name = "fk_produto_id_produto", nullable = false)
+   private Produto produto;
 
-   @OneToMany(mappedBy = "estoque")
-   private List<TransacaoMonetaria> transacoes;
+    @ManyToMany(mappedBy = "estoques")
+    private Set<TransacaoMonetaria> transacoesMonetarias = new HashSet<>();
 
 
     /*  --- CONSTRUTORES --- */
     public Estoque() { }
-    // todo construtor all args
+    public Estoque(Integer quantProduto, String dataEnt, String dataSaida, String nomeProd,
+                   String validadeProd, String tipoProd, String statusProd, Produto produto) {
+        this.quantProduto = quantProduto;
+        this.dataEnt = dataEnt;
+        this.dataSaida = dataSaida;
+        this.nomeProd = nomeProd;
+        this.validadeProd = validadeProd;
+        this.tipoProd = tipoProd;
+        this.statusProd = statusProd;
+        this.produto = produto;
+    }
 
 }

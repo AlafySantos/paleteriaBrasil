@@ -31,17 +31,18 @@ public class Produto {
     @JoinColumn(name = "fk_fornecedor_id_fornecedor", nullable = false)
     private Fornecedor fornecedor;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_estoque_id_estoque", nullable = false)
-    private Estoque estoque;
-
-    @ManyToOne
-    @JoinColumn(name = "fk_transacao_monetaria_id_transacao")
-    private TransacaoMonetaria transacaoMonetaria;
+    @OneToMany(mappedBy = "produto")
+    private List<Estoque> estoques;
 
 
     /*  --- CONSTRUTORES --- */
     public Produto() { }
-    // todo construtor all args
+    public Produto(String nomeProd, String tipoProduto, Float valorProd, Fornecedor fornecedor) {
+        this.nomeProd = nomeProd;
+        this.tipoProduto = tipoProduto;
+        this.valorProd = valorProd;
+        this.fornecedor = fornecedor;
+    }
+
 
 }

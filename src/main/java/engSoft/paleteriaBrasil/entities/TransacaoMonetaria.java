@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,16 +32,21 @@ public class TransacaoMonetaria {
 
 
     /*  --- RELACOES --- */
-    @OneToMany(mappedBy = "transacaoMonetaria")
-    private List<Produto> produtos;
-
-    @ManyToOne
-    @JoinColumn(name = "fk_estoque_id_estoque")
-    private Estoque estoque;
+    @ManyToMany
+    @JoinTable(
+            name = "registra",
+            joinColumns = @JoinColumn(name = "fk_transacao_monetaria_id_transacao"),
+            inverseJoinColumns = @JoinColumn(name = "fk_estoque_id_estoque")
+    )
+    private Set<Estoque> estoques = new HashSet<>();
 
 
     /*  --- CONSTRUTORES --- */
     public TransacaoMonetaria() { }
-    // todo construtor all args
-
+    public TransacaoMonetaria(String data, Float valor, String formaPagamento, Integer quant) {
+        this.data = data;
+        this.valor = valor;
+        this.formaPagamento = formaPagamento;
+        this.quant = quant;
+    }
 }
