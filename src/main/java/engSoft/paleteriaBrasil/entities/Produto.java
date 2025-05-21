@@ -1,8 +1,13 @@
 package engSoft.paleteriaBrasil.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class Produto {
 
@@ -11,7 +16,7 @@ public class Produto {
     @Column(name = "id_produto")
     private Integer id;
 
-    @Column(name = "nome_prod", length = 20)
+    @Column(name = "nome_prod", length = 100)
     private String nomeProd;
 
     @Column(name = "tipo_produto", length = 20)
@@ -26,62 +31,17 @@ public class Produto {
     @JoinColumn(name = "fk_fornecedor_id_fornecedor", nullable = false)
     private Fornecedor fornecedor;
 
-    @OneToMany(mappedBy = "produto")
-    private List<Estoque> estoques;
+    @ManyToOne
+    @JoinColumn(name = "fk_estoque_id_estoque", nullable = false)
+    private Estoque estoque;
 
-    @OneToMany(mappedBy = "produto")
-    private List<TransacaoMonetaria> transacoesMonetarias;
+    @ManyToOne
+    @JoinColumn(name = "fk_transacao_monetaria_id_transacao")
+    private TransacaoMonetaria transacaoMonetaria;
 
 
     /*  --- CONSTRUTORES --- */
     public Produto() { }
-    public Produto(String nomeProd, String tipoProduto, Float valorProd, Fornecedor fornecedor) {
-        this.nomeProd = nomeProd;
-        this.tipoProduto = tipoProduto;
-        this.valorProd = valorProd;
-        this.fornecedor = fornecedor;
-    }
-
-
-    /*  --- GETTERS E SETTERS --- */
-    public Integer getId() {
-        return id;
-    }
-    public String getNomeProd() {
-        return nomeProd;
-    }
-    public void setNomeProd(String nomeProd) {
-        this.nomeProd = nomeProd;
-    }
-    public String getTipoProduto() {
-        return tipoProduto;
-    }
-    public void setTipoProduto(String tipoProduto) {
-        this.tipoProduto = tipoProduto;
-    }
-    public Float getValorProd() {
-        return valorProd;
-    }
-    public void setValorProd(Float valorProd) {
-        this.valorProd = valorProd;
-    }
-    public Fornecedor getFornecedor() {
-        return fornecedor;
-    }
-    public void setFornecedor(Fornecedor fornecedor) {
-        this.fornecedor = fornecedor;
-    }
-    public List<Estoque> getEstoques() {
-        return estoques;
-    }
-    public void setEstoques(List<Estoque> estoques) {
-        this.estoques = estoques;
-    }
-    public List<TransacaoMonetaria> getTransacoesMonetarias() {
-        return transacoesMonetarias;
-    }
-    public void setTransacoesMonetarias(List<TransacaoMonetaria> transacoesMonetarias) {
-        this.transacoesMonetarias = transacoesMonetarias;
-    }
+    // todo construtor all args
 
 }

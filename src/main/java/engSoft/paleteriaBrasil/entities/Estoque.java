@@ -1,7 +1,13 @@
 package engSoft.paleteriaBrasil.entities;
 
 import jakarta.persistence.*;
-//Jonathas teve aqui
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
 @Entity
 public class Estoque {
 
@@ -30,78 +36,15 @@ public class Estoque {
 
 
     /*  --- RELACOES --- */
-    @ManyToOne
-    @JoinColumn(name = "fk_produto_id_produto", nullable = false)
-    private Produto produto;
+   @OneToMany(mappedBy = "estoque")
+   private List<Produto> produtos;
 
-    @OneToOne(mappedBy = "estoque")
-    private TransacaoMonetaria transacaoMonetaria;
+   @OneToMany(mappedBy = "estoque")
+   private List<TransacaoMonetaria> transacoes;
 
 
     /*  --- CONSTRUTORES --- */
     public Estoque() { }
-    public Estoque(Integer quantProduto, String dataEnt, String dataSaida, String nomeProd, String validadeProd, String tipoProd, Produto produto) {
-        this.quantProduto = quantProduto;
-        this.dataEnt = dataEnt;
-        this.dataSaida = dataSaida;
-        this.nomeProd = nomeProd;
-        this.validadeProd = validadeProd;
-        this.tipoProd = tipoProd;
-        this.produto = produto;
-    }
-
-
-    /*  --- GETTERS E SETTERS --- */
-    public Integer getId() {
-        return id;
-    }
-    public Integer getQuantProduto() {
-        return quantProduto;
-    }
-    public void setQuantProduto(Integer quantProduto) {
-        this.quantProduto = quantProduto;
-    }
-    public String getDataEnt() {
-        return dataEnt;
-    }
-    public void setDataEnt(String dataEnt) {
-        this.dataEnt = dataEnt;
-    }
-    public String getDataSaida() {
-        return dataSaida;
-    }
-    public void setDataSaida(String dataSaida) {
-        this.dataSaida = dataSaida;
-    }
-    public String getNomeProd() {
-        return nomeProd;
-    }
-    public void setNomeProd(String nomeProd) {
-        this.nomeProd = nomeProd;
-    }
-    public String getValidadeProd() {
-        return validadeProd;
-    }
-    public void setValidadeProd(String validadeProd) {
-        this.validadeProd = validadeProd;
-    }
-    public String getTipoProd() {
-        return tipoProd;
-    }
-    public void setTipoProd(String tipoProd) {
-        this.tipoProd = tipoProd;
-    }
-    public Produto getProduto() {
-        return produto;
-    }
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-    public TransacaoMonetaria getTransacaoMonetaria() {
-        return transacaoMonetaria;
-    }
-    public void setTransacaoMonetaria(TransacaoMonetaria transacaoMonetaria) {
-        this.transacaoMonetaria = transacaoMonetaria;
-    }
+    // todo construtor all args
 
 }
