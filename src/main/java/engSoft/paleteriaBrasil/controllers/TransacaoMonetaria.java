@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/transacao")
-@AllArgsConstructor
 public class TransacaoMonetaria {
     
 }
