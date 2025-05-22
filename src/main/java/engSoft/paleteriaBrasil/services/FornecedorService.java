@@ -2,7 +2,6 @@ package engSoft.paleteriaBrasil.services;
 
 import engSoft.paleteriaBrasil.entities.Fornecedor;
 import engSoft.paleteriaBrasil.repositories.FornecedorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,11 +10,13 @@ import java.util.Optional;
 @Service
 public class FornecedorService {
 
-    @Autowired
-    FornecedorRepository fornecedorRepository;
+    private final FornecedorRepository fornecedorRepository;
 
+    public FornecedorService(FornecedorRepository fornecedorRepository) {
+        this.fornecedorRepository = fornecedorRepository;
+    }
     // CREATE
-    public void inserir(Fornecedor fornecedor) {
+    public void inserirFornecedor(Fornecedor fornecedor){
         fornecedorRepository.save(fornecedor);
     }
 
@@ -28,12 +29,12 @@ public class FornecedorService {
     }
 
     // UPDATE
-    public void alterar(Fornecedor fornecedor) {
+    public void alterarFornecedor(Fornecedor fornecedor) {
         fornecedorRepository.save(fornecedor);
     }
 
     // DELETE
-    public void removerPorId(Integer id) {
+    public void removerFornecedorId(Integer id) {
         fornecedorRepository.deleteById(id);
     }
 
