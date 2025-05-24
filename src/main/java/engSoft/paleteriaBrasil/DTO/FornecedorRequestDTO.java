@@ -1,6 +1,7 @@
 package engSoft.paleteriaBrasil.DTO;
 
 public record FornecedorRequestDTO(Integer idFornecedor, String telefone, String cnpj, String nomeFornecedor) {
+
     public Integer getIdFornecedor() {
         return this.idFornecedor;
     }

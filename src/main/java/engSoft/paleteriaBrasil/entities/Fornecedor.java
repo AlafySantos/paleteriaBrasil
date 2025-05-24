@@ -6,9 +6,10 @@ import lombok.Setter;
 
 import java.util.List;
 
+
+@Entity
 @Getter
 @Setter
-@Entity
 public class Fornecedor {
 
     @Id
@@ -16,11 +17,11 @@ public class Fornecedor {
     @Column(name = "id_fornecedor")
     private Integer id;
 
-    @Column(length = 11)
+    @Column(length = 15)
     private String telefone;
 
-    @Column
-    private Integer cnpj;
+    @Column(length = 18)
+    private String cnpj;
 
     @Column(name = "nome_fornecedor", length = 80)
     private String nomeFornecedor;
@@ -33,7 +34,7 @@ public class Fornecedor {
 
     /*  --- CONSTRUTORES --- */
     public Fornecedor() { }
-    public Fornecedor(String telefone, Integer cnpj, String nomeFornecedor) {
+    public Fornecedor(String telefone, String cnpj, String nomeFornecedor) {
         this.telefone = telefone;
         this.cnpj = cnpj;
         this.nomeFornecedor = nomeFornecedor;
