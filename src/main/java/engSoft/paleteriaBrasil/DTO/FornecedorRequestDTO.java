@@ -1,6 +1,6 @@
 package engSoft.paleteriaBrasil.DTO;
 
-public record FornecedorRequestDTO(Integer idFornecedor, String telefone, String cnpj, String nomeFornecedor) {
+public record FornecedorRequestDTO(Integer idFornecedor, String telefone, String cnpj, String nome_fornecedor) {
 
     public Integer getIdFornecedor() {
         return this.idFornecedor;
@@ -15,7 +15,7 @@ public record FornecedorRequestDTO(Integer idFornecedor, String telefone, String
     }
 
     public String getNomeFornecedor() {
-        return this.nomeFornecedor;
+        return this.nome_fornecedor;
     }
 }
 

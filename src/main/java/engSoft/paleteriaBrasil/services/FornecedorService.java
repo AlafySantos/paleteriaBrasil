@@ -2,7 +2,9 @@ package engSoft.paleteriaBrasil.services;
 
 import engSoft.paleteriaBrasil.entities.Fornecedor;
 import engSoft.paleteriaBrasil.repositories.FornecedorRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,10 +34,29 @@ public class FornecedorService {
     public void alterarFornecedor(Fornecedor fornecedor) {
         fornecedorRepository.save(fornecedor);
     }
+    // UPDATE POR ID
+    public Fornecedor alterarFornecedorByID(Integer id, Fornecedor fornecedorAtualizado) {
+        Fornecedor fornecedorExistente = fornecedorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado com id: " + id));
 
+        // Dados de forncedor que devem ser alterados
+        fornecedorExistente.setNome_fornecedor(fornecedorAtualizado.getNome_fornecedor());
+        fornecedorExistente.setCnpj(fornecedorAtualizado.getCnpj());
+        fornecedorExistente.setTelefone(fornecedorAtualizado.getTelefone());
+
+        //altera forncedor no banco com novos dados.
+        return fornecedorRepository.save(fornecedorExistente);
+    }
     // DELETE
     public void removerFornecedorId(Integer id) {
         fornecedorRepository.deleteById(id);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String message) {
+            super(message);
+        }
     }
 
 }

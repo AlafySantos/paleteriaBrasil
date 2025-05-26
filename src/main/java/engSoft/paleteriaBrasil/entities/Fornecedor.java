@@ -1,5 +1,6 @@
 package engSoft.paleteriaBrasil.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,21 +24,22 @@ public class Fornecedor {
     @Column(length = 18)
     private String cnpj;
 
-    @Column(name = "nome_fornecedor", length = 80)
-    private String nomeFornecedor;
+    @Column(length = 80)
+    private String nome_fornecedor;
 
 
     /*  --- RELACOES --- */
-    @OneToMany(mappedBy = "fornecedor")
+    @OneToMany(mappedBy = "fornecedor", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Produto> produtos;
 
 
     /*  --- CONSTRUTORES --- */
     public Fornecedor() { }
-    public Fornecedor(String telefone, String cnpj, String nomeFornecedor) {
+    public Fornecedor(String telefone, String cnpj, String nome_fornecedor) {
         this.telefone = telefone;
         this.cnpj = cnpj;
-        this.nomeFornecedor = nomeFornecedor;
+        this.nome_fornecedor = nome_fornecedor;
     }
 
 }
