@@ -1,5 +1,6 @@
 package engSoft.paleteriaBrasil.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class Produto {
     private Fornecedor fornecedor;
 
     @OneToMany(mappedBy = "produto")
+    @JsonIgnore
     private List<Estoque> estoques;
 
 

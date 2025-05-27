@@ -26,16 +26,24 @@ public class FornecedorService {
     public List<Fornecedor> listarTodos() {
         return fornecedorRepository.findAll();
     }
+
+    //READ POR ID
     public Optional<Fornecedor> buscarPorId(Integer id) {
         return fornecedorRepository.findById(id);
+    }
+
+    // DELETE
+    public void removerPorId(Integer id) {
+        fornecedorRepository.deleteById(id);
     }
 
     // UPDATE
     public void alterar(Fornecedor fornecedor) {
         fornecedorRepository.save(fornecedor);
     }
+
     // UPDATE POR ID
-    public Fornecedor alterarByID(Integer id, Fornecedor fornecedorAtualizado) {
+    public Fornecedor alterarPorID(Integer id, Fornecedor fornecedorAtualizado) {
         Fornecedor fornecedorExistente = fornecedorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado com id: " + id));
 
@@ -47,16 +55,11 @@ public class FornecedorService {
         //altera forncedor no banco com novos dados.
         return fornecedorRepository.save(fornecedorExistente);
     }
-    // DELETE
-    public void removerById(Integer id) {
-        fornecedorRepository.deleteById(id);
-    }
-
+    //Função para Tratar Exeption Alterar Por Id.
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public class ResourceNotFoundException extends RuntimeException {
         public ResourceNotFoundException(String message) {
             super(message);
         }
     }
-
 }

@@ -31,12 +31,12 @@ public class FornecedorController {
         if (id == null) {
             throw new IllegalArgumentException("ID não pode ser nulo");
         }
-        fornecedorService.removerById(id);
+        fornecedorService.removerPorId(id);
     }
 
     @PutMapping("/alterar/{id}")
     public ResponseEntity<Fornecedor> alterar(@PathVariable Integer id, @RequestBody Fornecedor fornecedorAtualizado){
-        Fornecedor fornecedor = fornecedorService.alterarByID(id, fornecedorAtualizado);
+        Fornecedor fornecedor = fornecedorService.alterarPorID(id, fornecedorAtualizado);
         return ResponseEntity.ok(fornecedor);
     }
 }
