@@ -16,27 +16,27 @@ public class FornecedorController {
     @Autowired
     private FornecedorService fornecedorService;
 
-    @GetMapping("/listarFornecedor")
-    public List<Fornecedor> listarFornecedor(){
+    @GetMapping("/listar")
+    public List<Fornecedor> listar(){
         return fornecedorService.listarTodos();
     }
 
-    @PostMapping("/inserirFornecedor")
-    public void inserirFornecedor(@RequestBody Fornecedor fornecedor) {
+    @PostMapping("/inserir")
+    public void inserir(@RequestBody Fornecedor fornecedor) {
         System.out.println("Dados recebidos para inserção: " + fornecedor);
-        fornecedorService.inserirFornecedor(fornecedor);
+        fornecedorService.inserir(fornecedor);
     }
-    @DeleteMapping("/removerFornecedor/{id}")
-    public void removerFornecedor(@PathVariable("id") Integer id) throws IOException {
+    @DeleteMapping("/remover/{id}")
+    public void remover(@PathVariable("id") Integer id) throws IOException {
         if (id == null) {
             throw new IllegalArgumentException("ID não pode ser nulo");
         }
-        fornecedorService.removerFornecedorId(id);
+        fornecedorService.removerById(id);
     }
 
-    @PutMapping("/alterarFornecedor/{id}")
-    public ResponseEntity<Fornecedor> alterarFornecedor(@PathVariable Integer id, @RequestBody Fornecedor fornecedorAtualizado){
-        Fornecedor fornecedor = fornecedorService.alterarFornecedorByID(id, fornecedorAtualizado);
+    @PutMapping("/alterar/{id}")
+    public ResponseEntity<Fornecedor> alterar(@PathVariable Integer id, @RequestBody Fornecedor fornecedorAtualizado){
+        Fornecedor fornecedor = fornecedorService.alterarByID(id, fornecedorAtualizado);
         return ResponseEntity.ok(fornecedor);
     }
 }

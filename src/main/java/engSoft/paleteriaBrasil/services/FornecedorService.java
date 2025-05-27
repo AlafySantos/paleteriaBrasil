@@ -18,7 +18,7 @@ public class FornecedorService {
         this.fornecedorRepository = fornecedorRepository;
     }
     // CREATE
-    public void inserirFornecedor(Fornecedor fornecedor){
+    public void inserir(Fornecedor fornecedor){
         fornecedorRepository.save(fornecedor);
     }
 
@@ -31,11 +31,11 @@ public class FornecedorService {
     }
 
     // UPDATE
-    public void alterarFornecedor(Fornecedor fornecedor) {
+    public void alterar(Fornecedor fornecedor) {
         fornecedorRepository.save(fornecedor);
     }
     // UPDATE POR ID
-    public Fornecedor alterarFornecedorByID(Integer id, Fornecedor fornecedorAtualizado) {
+    public Fornecedor alterarByID(Integer id, Fornecedor fornecedorAtualizado) {
         Fornecedor fornecedorExistente = fornecedorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado com id: " + id));
 
@@ -48,7 +48,7 @@ public class FornecedorService {
         return fornecedorRepository.save(fornecedorExistente);
     }
     // DELETE
-    public void removerFornecedorId(Integer id) {
+    public void removerById(Integer id) {
         fornecedorRepository.deleteById(id);
     }
 
