@@ -8,12 +8,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/fornecedor")
 public class FornecedorController {
     @Autowired
     private FornecedorService fornecedorService;
+
+    @GetMapping("/listarFornecedor")
+    public List<Fornecedor> listarFornecedor(){
+        return fornecedorService.listarTodos();
+    }
 
     @PostMapping("/inserirFornecedor")
     public void inserirFornecedor(@RequestBody Fornecedor fornecedor) {
