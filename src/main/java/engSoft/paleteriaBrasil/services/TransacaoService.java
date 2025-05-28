@@ -1,11 +1,14 @@
 package engSoft.paleteriaBrasil.services;
 
 import engSoft.paleteriaBrasil.entities.Estoque;
+import engSoft.paleteriaBrasil.entities.Produto;
 import engSoft.paleteriaBrasil.entities.TransacaoMonetaria;
 import engSoft.paleteriaBrasil.repositories.EstoqueRepository;
 import engSoft.paleteriaBrasil.repositories.TransacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,14 +48,33 @@ public class TransacaoService {
         return transacaoRepository.findById(id);
     }
 
-    // UPDATE
-    public void alterar(TransacaoMonetaria transacao) {
-        transacaoRepository.save(transacao);
-    }
-
     // DELETE
     public void removerPorId(Integer id) {
         transacaoRepository.deleteById(id);
     }
+    // UPDATE
+    //public void alterar(TransacaoMonetaria transacao) {transacaoRepository.save(transacao);}
 
+    // UPDATE POR ID
+    public TransacaoMonetaria alterarPorID(Integer id, TransacaoMonetaria transacaoAtualizado) {
+        TransacaoMonetaria transacaoExistente = transacaoRepository.findById(id)
+                .orElseThrow(() -> new TransacaoService.ResourceNotFoundException("Transação não encontrado com id: " + id));
+
+        // Dados de produto que devem ser alterados
+        transacaoExistente.setData(transacaoAtualizado.getData());
+        transacaoExistente.setFormaPagamento(transacaoAtualizado.getFormaPagamento());
+        transacaoExistente.setQuant(transacaoAtualizado.getQuant());
+        transacaoExistente.setValor(transacaoAtualizado.getValor());
+
+
+        //altera Produto no banco com novos dados.
+        return transacaoRepository.save(transacaoExistente);
+    }
+    //Função para Tratar Exeption Alterar Por Id.
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String message) {
+            super(message);
+        }
+    }
 }
