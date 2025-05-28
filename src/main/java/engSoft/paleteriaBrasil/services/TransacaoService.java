@@ -31,28 +31,6 @@ public class TransacaoService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // CREATE
     public void inserir(TransacaoMonetaria transacao) {
         transacaoRepository.save(transacao);
@@ -62,6 +40,7 @@ public class TransacaoService {
     public List<TransacaoMonetaria> listarTodos() {
         return transacaoRepository.findAll();
     }
+
     public Optional<TransacaoMonetaria> buscarPorId(Integer id) {
         return transacaoRepository.findById(id);
     }
