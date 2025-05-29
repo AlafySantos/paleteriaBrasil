@@ -28,8 +28,8 @@ public class TransacaoMonetaria {
     @Column(name = "forma_pagamento", length = 20)
     private String formaPagamento;
 
-    @Column
-    private Integer quant;
+    @Column(name = "quant")
+    private Integer quantTotal;
 
     @Column
     private Time hora;
@@ -44,6 +44,6 @@ public class TransacaoMonetaria {
         this.data = data;
         this.valor = valor;
         this.formaPagamento = formaPagamento;
-        this.quant = quant;
+        this.quantTotal = quant;
     }
 }

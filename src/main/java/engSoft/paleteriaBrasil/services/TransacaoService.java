@@ -42,6 +42,7 @@ public class TransacaoService {
     // UPDATE
     //public void alterar(TransacaoMonetaria transacao) {transacaoRepository.save(transacao);}
 
+    //TODO: Rever com  a estrutura nova de automatização de valores pode precisar de ajustes
     // UPDATE POR ID
     public TransacaoMonetaria alterarPorID(Integer id, TransacaoMonetaria transacaoAtualizado) {
         TransacaoMonetaria transacaoExistente = transacaoRepository.findById(id)
@@ -50,7 +51,7 @@ public class TransacaoService {
         // Dados de produto que devem ser alterados
         transacaoExistente.setData(transacaoAtualizado.getData());
         transacaoExistente.setFormaPagamento(transacaoAtualizado.getFormaPagamento());
-        transacaoExistente.setQuant(transacaoAtualizado.getQuant());
+        transacaoExistente.setQuantTotal(transacaoAtualizado.getQuantTotal());
         transacaoExistente.setValor(transacaoAtualizado.getValor());
 
 

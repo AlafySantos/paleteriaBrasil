@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +44,7 @@ public class EstoqueService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFormatada = LocalDate.now().format(formatter);
         estoque.setDataEnt(dataFormatada);
-
+        //TODO: COMO MELHORIA FUTURA COLOCAR DATA AUTOMATICA EM PRODUTOS PRODUZIDOS PELA PALETERIA BRASIL
         estoque.setValidadeProd(dto.getValidadeProd());
 
         estoque.setStatusProd(dto.getStatusProd());
@@ -95,18 +97,96 @@ public class EstoqueService {
         }
     }
 
-    //TODO: Inserir logica para preecher automaticamente valor total de quantidade de saida, valor total da compra, hora e data atual
+//    //TODO: Inserir logica para preecher automaticamente valor total de quantidade de saida, valor total da compra, hora e data atual
+//    @Transactional
+//    public void novaVenda(NovaVendaDTO vendaDTO) {
+//        TransacaoMonetaria transacao = new TransacaoMonetaria(
+//                vendaDTO.getDataVenda(),
+//                vendaDTO.getValorTotal(),
+//                vendaDTO.getFormaPagamento(),
+//                vendaDTO.getQuantidades().stream().mapToInt(Integer::intValue).sum()
+//        );
+//
+//        transacaoRepository.save(transacao); // Primeiro salva para gerar o ID
+//
+//        for (int i = 0; i < vendaDTO.getIdsEstoque().size(); i++) {
+//            Integer idEstoque = vendaDTO.getIdsEstoque().get(i);
+//            Integer quantidadeVendida = vendaDTO.getQuantidades().get(i);
+//
+//            Estoque estoque = estoqueRepository.findById(idEstoque)
+//                    .orElseThrow(() -> new RuntimeException("Estoque não encontrado: ID " + idEstoque));
+//
+//            if (estoque.getQuantProduto() < quantidadeVendida) {
+//                throw new RuntimeException("Estoque insuficiente para o produto: " + estoque.getId());
+//            }
+//
+//            // Decrementa a quantidade
+//            estoque.setQuantProduto(estoque.getQuantProduto() - quantidadeVendida);
+//
+//            if (estoque.getQuantProduto() == 0) {
+//                estoque.setStatusProd("indisponivel");
+//            }
+//
+//            estoqueRepository.save(estoque);
+//
+//            // Criar a entidade intermediária Registra
+//            Registra registra = new Registra();
+//
+//            RegistraId registraId = new RegistraId();
+//            registraId.setTransacaoId(transacao.getId());
+//            registraId.setEstoqueId(estoque.getId());
+//
+//            registra.setId(registraId);
+//            registra.setTransacao(transacao);
+//            registra.setEstoque(estoque);
+//            registra.setQuantidadeSaida(quantidadeVendida);
+//
+//            registraRepository.save(registra);
+//        }
+//    }
+
+
     @Transactional
     public void novaVenda(NovaVendaDTO vendaDTO) {
-        TransacaoMonetaria transacao = new TransacaoMonetaria(
-                vendaDTO.getDataVenda(),
-                vendaDTO.getValorTotal(),
-                vendaDTO.getFormaPagamento(),
-                vendaDTO.getQuantidades().stream().mapToInt(Integer::intValue).sum()
-        );
+        // ✅ Data atual como String: "dd/MM/yyyy"
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataAtual = LocalDateTime.now().format(dateFormatter);
+
+        // ✅ Hora atual como java.sql.Time
+        LocalDateTime agora = LocalDateTime.now();
+        Time horaAtual = Time.valueOf(agora.toLocalTime());
+
+        // ✅ Valor total da quantidade de saída
+        int totalQuantidade = vendaDTO.getQuantidades().stream().mapToInt(Integer::intValue).sum();
+
+        // ✅ Valor total da compra
+        float valorTotalCompra = 0;
+
+        // ✅ Calcular o valor total da compra
+        for (int i = 0; i < vendaDTO.getIdsEstoque().size(); i++) {
+            Integer idEstoque = vendaDTO.getIdsEstoque().get(i);
+            Integer quantidadeVendida = vendaDTO.getQuantidades().get(i);
+
+            Estoque estoque = estoqueRepository.findById(idEstoque)
+                    .orElseThrow(() -> new RuntimeException("Estoque não encontrado: ID " + idEstoque));
+
+            Produto produto = estoque.getProduto();
+            double precoUnitario = produto.getValorProd();
+
+            valorTotalCompra += precoUnitario * quantidadeVendida;
+        }
+
+        // ✅ Criar TransacaoMonetaria com data, hora, valor total e quantidade
+        TransacaoMonetaria transacao = new TransacaoMonetaria();
+        transacao.setData(dataAtual);
+        transacao.setHora(horaAtual);
+        transacao.setValor(valorTotalCompra);
+        transacao.setFormaPagamento(vendaDTO.getFormaPagamento());
+        transacao.setQuantTotal(totalQuantidade);
 
         transacaoRepository.save(transacao); // Primeiro salva para gerar o ID
 
+        // ✅ Atualiza Estoques e cria registros
         for (int i = 0; i < vendaDTO.getIdsEstoque().size(); i++) {
             Integer idEstoque = vendaDTO.getIdsEstoque().get(i);
             Integer quantidadeVendida = vendaDTO.getQuantidades().get(i);
@@ -118,7 +198,7 @@ public class EstoqueService {
                 throw new RuntimeException("Estoque insuficiente para o produto: " + estoque.getId());
             }
 
-            // Decrementa a quantidade
+            // ✅ Decrementa a quantidade
             estoque.setQuantProduto(estoque.getQuantProduto() - quantidadeVendida);
 
             if (estoque.getQuantProduto() == 0) {
@@ -127,7 +207,7 @@ public class EstoqueService {
 
             estoqueRepository.save(estoque);
 
-            // Criar a entidade intermediária Registra
+            // ✅ Criar a entidade intermediária Registra
             Registra registra = new Registra();
 
             RegistraId registraId = new RegistraId();
@@ -142,6 +222,7 @@ public class EstoqueService {
             registraRepository.save(registra);
         }
     }
+
 
 
 }
