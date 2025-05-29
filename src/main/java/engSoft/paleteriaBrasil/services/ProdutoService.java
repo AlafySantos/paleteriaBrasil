@@ -1,6 +1,5 @@
 package engSoft.paleteriaBrasil.services;
 
-import engSoft.paleteriaBrasil.entities.Fornecedor;
 import engSoft.paleteriaBrasil.entities.Produto;
 import engSoft.paleteriaBrasil.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

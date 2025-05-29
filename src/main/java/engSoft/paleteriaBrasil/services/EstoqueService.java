@@ -1,11 +1,10 @@
 package engSoft.paleteriaBrasil.services;
 
+import engSoft.paleteriaBrasil.DTO.EstoqueCreateDTO;
 import engSoft.paleteriaBrasil.DTO.NovaVendaDTO;
-import engSoft.paleteriaBrasil.entities.Estoque;
-import engSoft.paleteriaBrasil.entities.Registra;
-import engSoft.paleteriaBrasil.entities.RegistraId;
-import engSoft.paleteriaBrasil.entities.TransacaoMonetaria;
+import engSoft.paleteriaBrasil.entities.*;
 import engSoft.paleteriaBrasil.repositories.EstoqueRepository;
+import engSoft.paleteriaBrasil.repositories.ProdutoRepository;
 import engSoft.paleteriaBrasil.repositories.RegistraRepository;
 import engSoft.paleteriaBrasil.repositories.TransacaoRepository;
 import jakarta.transaction.Transactional;
@@ -14,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,10 +30,29 @@ public class EstoqueService {
     @Autowired
     private RegistraRepository registraRepository;
 
-    //TODO inserir logica para preenchimento automatico da data no momento da criação.
-    // CREATE
-    public void inserir(Estoque estoque) {
-        estoqueRepository.save(estoque);
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
+    public Estoque inserir(EstoqueCreateDTO dto) {
+        Estoque estoque = new Estoque();
+
+        estoque.setQuantProduto(dto.getQuantProduto());
+
+        //Formata a data de entrada para "dd/MM/yyyy"
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataFormatada = LocalDate.now().format(formatter);
+        estoque.setDataEnt(dataFormatada);
+
+        estoque.setValidadeProd(dto.getValidadeProd());
+
+        estoque.setStatusProd(dto.getStatusProd());
+
+        // Associa produto
+        Produto produto = produtoRepository.findById(dto.getProdutoId())
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado: ID " + dto.getProdutoId()));
+        estoque.setProduto(produto);
+
+        return estoqueRepository.save(estoque);
     }
 
     // READ

@@ -1,16 +1,14 @@
 package engSoft.paleteriaBrasil.controllers;
 
 
+import engSoft.paleteriaBrasil.DTO.EstoqueCreateDTO;
 import engSoft.paleteriaBrasil.DTO.NovaVendaDTO;
 import engSoft.paleteriaBrasil.entities.Estoque;
-import engSoft.paleteriaBrasil.entities.Fornecedor;
-import engSoft.paleteriaBrasil.repositories.EstoqueRepository;
 import engSoft.paleteriaBrasil.services.EstoqueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,9 +27,9 @@ public class EstoqueController {
     }
 
     @PostMapping("/inserir")
-    public void inserir(@RequestBody Estoque estoque) {
-        System.out.println("Dados recebidos para inserção: " + estoque);
-        estoqueService.inserir(estoque);
+    public ResponseEntity<Estoque> inserir(@RequestBody EstoqueCreateDTO dto) {
+        Estoque novoEstoque = estoqueService.inserir(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoEstoque);
     }
 
     @DeleteMapping("/remover/{id}")
