@@ -23,7 +23,8 @@ public class Produto {
     @Column(name = "tipo_produto", length = 20)
     private String tipoProduto;
 
-    //TODO: ADICIONAR ATRIBUTO SUB-TIPO NESTA ENTIDADE
+    @Column(name = "subtipo_produto", length = 20)
+    private String subtipoProduto;
 
     @Column(name = "valor_prod")
     private Float valorProd;

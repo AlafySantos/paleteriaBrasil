@@ -48,6 +48,7 @@ public class ProdutoService {
         // Dados de produto que devem ser alterados
         produtoExistente.setNomeProd(produtoAtualizado.getNomeProd());
         produtoExistente.setTipoProduto(produtoAtualizado.getTipoProduto());
+        produtoExistente.setSubtipoProduto(produtoAtualizado.getSubtipoProduto());
         produtoExistente.setValorProd(produtoAtualizado.getValorProd());
         produtoExistente.setFornecedor(produtoAtualizado.getFornecedor());
 

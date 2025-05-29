@@ -42,8 +42,8 @@ public class TransacaoController {
         return ResponseEntity.ok(transacao);
     }
 
-    @GetMapping("/vendasDoDia")
-    public List<TransacaoCompletaDTO> listarVendasDoDia() {
-        return transacaoService.listarVendasDoDia();
-    }
+//    @GetMapping("/vendasDoDia")
+//    public List<TransacaoCompletaDTO> listarVendasDoDia() {
+//        return transacaoService.listarVendasDoDia();
+//    }
 }

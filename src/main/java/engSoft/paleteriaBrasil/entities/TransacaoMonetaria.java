@@ -1,10 +1,10 @@
 package engSoft.paleteriaBrasil.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,17 +31,12 @@ public class TransacaoMonetaria {
     @Column
     private Integer quant;
 
-    //TODO: TROCAR RELAÇÃO DE MANYTOMANY PARA ONETOMANY COM A TABELA REGISTRA
-    /*  --- RELACOES --- */
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JsonIgnore
-    @JoinTable(
-            name = "registra",
-            joinColumns = @JoinColumn(name = "fk_transacao_monetaria_id_transacao"),
-            inverseJoinColumns = @JoinColumn(name = "fk_estoque_id_estoque")
-    )
-    private Set<Estoque> estoques = new HashSet<>();
+    @Column
+    private Time hora;
 
+    /* --- RELAÇÃO COM REGISTRA --- */
+    @OneToMany(mappedBy = "transacao", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<Registra> registros = new HashSet<>();
 
     /*  --- CONSTRUTORES --- */
     public TransacaoMonetaria() { }
