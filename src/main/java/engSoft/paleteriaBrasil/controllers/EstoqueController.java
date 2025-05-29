@@ -1,6 +1,7 @@
 package engSoft.paleteriaBrasil.controllers;
 
 
+import engSoft.paleteriaBrasil.DTO.NovaVendaDTO;
 import engSoft.paleteriaBrasil.entities.Estoque;
 import engSoft.paleteriaBrasil.entities.Fornecedor;
 import engSoft.paleteriaBrasil.repositories.EstoqueRepository;
@@ -47,6 +48,15 @@ public class EstoqueController {
         return ResponseEntity.ok(estoque);
     }
 
+    @PostMapping("/novaVenda")
+    public ResponseEntity<String> novaVenda(@RequestBody NovaVendaDTO vendaDTO) {
+        try {
+            estoqueService.novaVenda(vendaDTO);
+            return ResponseEntity.ok("Venda realizada com sucesso!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Erro na venda: " + e.getMessage());
+        }
+    }
 
 
 

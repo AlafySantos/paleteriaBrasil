@@ -1,5 +1,6 @@
 package engSoft.paleteriaBrasil.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +33,8 @@ public class TransacaoMonetaria {
 
 
     /*  --- RELACOES --- */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinTable(
             name = "registra",
             joinColumns = @JoinColumn(name = "fk_transacao_monetaria_id_transacao"),
