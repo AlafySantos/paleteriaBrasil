@@ -31,7 +31,7 @@ public class TransacaoMonetaria {
     @Column
     private Integer quant;
 
-
+    //TODO: TROCAR RELAÇÃO DE MANYTOMANY PARA ONETOMANY COM A TABELA REGISTRA
     /*  --- RELACOES --- */
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore

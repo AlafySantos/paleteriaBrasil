@@ -23,16 +23,18 @@ public class Estoque {
 
     @Column(name = "data_ent", length = 11)
     private String dataEnt;
-
+    //TODO: TIRAR ESSE ATRIBUTO ADICIONAR NA TABELA REGISTRA
     @Column(name = "data_saida", length = 11)
     private String dataSaida;
 
+    //TODO: RETIRAR ESSE ATRIBUTO O MESMO JA ESTA CONTIDO NO PRODUTO ASSOCIADO
     @Column(name = "nome_prod", length = 100)
     private String nomeProd;
 
     @Column(name = "validade_prod", length = 11)
     private String validadeProd;
 
+    //TODO: RETIRAR ESSE ATRIBUTO O MESMO JA ESTA CONTIDO NO PRODUTO ASSOCIADO
     @Column(name = "tipo_prod", length = 20)
     private String tipoProd;
 

@@ -27,6 +27,7 @@ public class TransacaoService {
     @Autowired
     private EstoqueRepository estoqueRepository;
 
+    //Associação Estoque com Transação.
     public void associarEstoque(Integer transacaoId, Integer estoqueId) {
         TransacaoMonetaria transacao = transacaoRepository.findById(transacaoId)
                 .orElseThrow(() -> new RuntimeException("Transacao não encontrada"));
@@ -83,6 +84,7 @@ public class TransacaoService {
         }
     }
 
+    //Função para construir tabela Historico do Dia
     public List<TransacaoCompletaDTO> listarVendasDoDia() {
         LocalDate hoje = LocalDate.now();
         String dataFormatada = hoje.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
