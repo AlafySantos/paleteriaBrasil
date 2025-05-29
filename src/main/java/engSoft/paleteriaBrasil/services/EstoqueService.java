@@ -97,55 +97,6 @@ public class EstoqueService {
         }
     }
 
-//    //TODO: Inserir logica para preecher automaticamente valor total de quantidade de saida, valor total da compra, hora e data atual
-//    @Transactional
-//    public void novaVenda(NovaVendaDTO vendaDTO) {
-//        TransacaoMonetaria transacao = new TransacaoMonetaria(
-//                vendaDTO.getDataVenda(),
-//                vendaDTO.getValorTotal(),
-//                vendaDTO.getFormaPagamento(),
-//                vendaDTO.getQuantidades().stream().mapToInt(Integer::intValue).sum()
-//        );
-//
-//        transacaoRepository.save(transacao); // Primeiro salva para gerar o ID
-//
-//        for (int i = 0; i < vendaDTO.getIdsEstoque().size(); i++) {
-//            Integer idEstoque = vendaDTO.getIdsEstoque().get(i);
-//            Integer quantidadeVendida = vendaDTO.getQuantidades().get(i);
-//
-//            Estoque estoque = estoqueRepository.findById(idEstoque)
-//                    .orElseThrow(() -> new RuntimeException("Estoque não encontrado: ID " + idEstoque));
-//
-//            if (estoque.getQuantProduto() < quantidadeVendida) {
-//                throw new RuntimeException("Estoque insuficiente para o produto: " + estoque.getId());
-//            }
-//
-//            // Decrementa a quantidade
-//            estoque.setQuantProduto(estoque.getQuantProduto() - quantidadeVendida);
-//
-//            if (estoque.getQuantProduto() == 0) {
-//                estoque.setStatusProd("indisponivel");
-//            }
-//
-//            estoqueRepository.save(estoque);
-//
-//            // Criar a entidade intermediária Registra
-//            Registra registra = new Registra();
-//
-//            RegistraId registraId = new RegistraId();
-//            registraId.setTransacaoId(transacao.getId());
-//            registraId.setEstoqueId(estoque.getId());
-//
-//            registra.setId(registraId);
-//            registra.setTransacao(transacao);
-//            registra.setEstoque(estoque);
-//            registra.setQuantidadeSaida(quantidadeVendida);
-//
-//            registraRepository.save(registra);
-//        }
-//    }
-
-
     @Transactional
     public void novaVenda(NovaVendaDTO vendaDTO) {
         // ✅ Data atual como String: "dd/MM/yyyy"
