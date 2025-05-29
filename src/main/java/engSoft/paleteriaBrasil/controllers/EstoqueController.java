@@ -2,18 +2,54 @@ package engSoft.paleteriaBrasil.controllers;
 
 
 import engSoft.paleteriaBrasil.entities.Estoque;
+import engSoft.paleteriaBrasil.entities.Fornecedor;
 import engSoft.paleteriaBrasil.repositories.EstoqueRepository;
 import engSoft.paleteriaBrasil.services.EstoqueService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
 
+import java.io.IOException;
+import java.util.List;
+
 
 @RestController
+@RequestMapping("/estoque")
 public class EstoqueController {
+
+    @Autowired
     private EstoqueService estoqueService;
-    private EstoqueRepository estoqueRepository;
+
+    @GetMapping("/listar")
+    public List<Estoque> listar(){
+        return estoqueService.listarTodos();
+    }
+
+    @PostMapping("/inserir")
+    public void inserir(@RequestBody Estoque estoque) {
+        System.out.println("Dados recebidos para inserção: " + estoque);
+        estoqueService.inserir(estoque);
+    }
+
+    @DeleteMapping("/remover/{id}")
+    public void remover(@PathVariable("id") Integer id) throws IOException {
+        if (id == null) {
+            throw new IllegalArgumentException("ID não pode ser nulo");
+        }
+        estoqueService.removerPorId(id);
+    }
+
+    @PutMapping("/alterar/{id}")
+    public ResponseEntity<Estoque> alterar(@PathVariable Integer id, @RequestBody Estoque estoqueAtualizado){
+        Estoque estoque = estoqueService.alterarPorID(id, estoqueAtualizado);
+        return ResponseEntity.ok(estoque);
+    }
+
+
+
+
 
 
 }
