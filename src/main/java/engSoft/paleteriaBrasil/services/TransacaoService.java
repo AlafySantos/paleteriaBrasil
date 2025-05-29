@@ -1,15 +1,21 @@
 package engSoft.paleteriaBrasil.services;
 
+import engSoft.paleteriaBrasil.DTO.EstoqueResumoDTO;
+import engSoft.paleteriaBrasil.DTO.TransacaoCompletaDTO;
 import engSoft.paleteriaBrasil.entities.TransacaoMonetaria;
 import engSoft.paleteriaBrasil.repositories.EstoqueRepository;
 import engSoft.paleteriaBrasil.repositories.TransacaoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TransacaoService {
@@ -66,31 +72,35 @@ public class TransacaoService {
         }
     }
 
-//    //Função para construir tabela Historico do Dia
-//    public List<TransacaoCompletaDTO> listarVendasDoDia() {
-//        LocalDate hoje = LocalDate.now();
-//        String dataFormatada = hoje.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-//
-//        List<TransacaoMonetaria> transacoes = transacaoRepository.findByData(dataFormatada);
-//
-//        return transacoes.stream().map(transacao -> {
-//            List<EstoqueResumoDTO> estoques = transacao.getEstoques().stream()
-//                    .map(estoque -> new EstoqueResumoDTO(
-//                            estoque.getId(),
-//                            estoque.getNomeProd(),
-//                            estoque.getQuantProduto() // <-- mapeando quantidade do estoque
-//                    ))
-//                    .collect(Collectors.toList());
-//
-//            return new TransacaoCompletaDTO(
-//                    transacao.getId(),
-//                    transacao.getData(),
-//                    transacao.getValor(),
-//                    transacao.getFormaPagamento(),
-//                    transacao.getQuant(),
-//                    estoques
-//            );
-//        }).collect(Collectors.toList());
-//    }
+    //Função para construir tabela Historico do Dia
+    @Transactional
+    public List<TransacaoCompletaDTO> listarVendasDoDia() {
+        LocalDate hoje = LocalDate.now();
+        String dataFormatada = hoje.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+        List<TransacaoMonetaria> transacoes = transacaoRepository.findByDataWithProdutos(dataFormatada);
+
+        return transacoes.stream().map(transacao -> {
+            List<EstoqueResumoDTO> estoques = transacao.getRegistros().stream()
+                    .map(registra -> new EstoqueResumoDTO(
+                            registra.getEstoque().getId(),
+                            registra.getEstoque().getProduto().getNomeProd(),
+                            registra.getQuantidadeSaida()
+                    ))
+                    .collect(Collectors.toList());
+
+            return new TransacaoCompletaDTO(
+                    transacao.getId(),
+                    transacao.getData(),
+                    transacao.getHora(),
+                    transacao.getValor(),
+                    transacao.getFormaPagamento(),
+                    transacao.getQuantTotal(),
+                    estoques
+            );
+        }).collect(Collectors.toList());
+    }
+
+
 
 }
