@@ -1,5 +1,6 @@
 package engSoft.paleteriaBrasil.services;
 
+import engSoft.paleteriaBrasil.DTO.FornecedorDTO;
 import engSoft.paleteriaBrasil.entities.Fornecedor;
 import engSoft.paleteriaBrasil.repositories.FornecedorRepository;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FornecedorService {
@@ -25,6 +27,16 @@ public class FornecedorService {
     // READ
     public List<Fornecedor> listarTodos() {
         return fornecedorRepository.findAll();
+    }
+
+    //Listar Fornecedor Resumido ID + NOME
+    public List<FornecedorDTO> listarFornecedores() {
+        List<Fornecedor> fornecedores = fornecedorRepository.findAll();
+
+        // Converte a lista de entidade para lista de DTO
+        return fornecedores.stream()
+                .map(f -> new FornecedorDTO(f.getId(), f.getNome_fornecedor()))
+                .collect(Collectors.toList());
     }
 
     //READ POR ID

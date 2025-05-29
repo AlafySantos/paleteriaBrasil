@@ -1,6 +1,7 @@
 package engSoft.paleteriaBrasil.controllers;
 
 
+import engSoft.paleteriaBrasil.DTO.FornecedorDTO;
 import engSoft.paleteriaBrasil.entities.Fornecedor;
 import engSoft.paleteriaBrasil.services.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class FornecedorController {
     @GetMapping("/listar")
     public List<Fornecedor> listar(){
         return fornecedorService.listarTodos();
+    }
+
+    @GetMapping("/listarFornecedores")
+    public List<FornecedorDTO> listarFornecedores() {
+        return fornecedorService.listarFornecedores();
     }
 
     @PostMapping("/inserir")
