@@ -2,6 +2,7 @@ package engSoft.paleteriaBrasil.services;
 
 import engSoft.paleteriaBrasil.DTO.EstoqueResumoDTO;
 import engSoft.paleteriaBrasil.DTO.TransacaoCompletaDTO;
+import engSoft.paleteriaBrasil.DTO.TransacaoProdutoDTO;
 import engSoft.paleteriaBrasil.entities.TransacaoMonetaria;
 import engSoft.paleteriaBrasil.repositories.EstoqueRepository;
 import engSoft.paleteriaBrasil.repositories.TransacaoRepository;
@@ -74,7 +75,42 @@ public class TransacaoService {
 
     //Função para construir tabela Historico do Dia
     @Transactional
-    public List<TransacaoCompletaDTO> listarVendasDoDia() {
+    public List<TransacaoProdutoDTO> listarVendasDoDia() {
+        LocalDate hoje = LocalDate.now();
+        String dataFormatada = hoje.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+        List<TransacaoMonetaria> transacoes = transacaoRepository.findByDataWithProdutos(dataFormatada);
+
+        return transacoes.stream()
+                .flatMap(transacao -> transacao.getRegistros().stream().map(registro -> {
+                    TransacaoProdutoDTO dto = new TransacaoProdutoDTO();
+                    dto.setId(transacao.getId());
+                    dto.setData(transacao.getData());
+                    dto.setHora(transacao.getHora());
+                    dto.setValor(transacao.getValor());
+                    dto.setFormaPagamento(transacao.getFormaPagamento());
+
+
+                    dto.setIdEstoque(registro.getEstoque().getId());
+                    dto.setNomeProd(registro.getEstoque().getProduto().getNomeProd());
+                    dto.setQuantProduto(registro.getQuantidadeSaida());
+
+                    // Pega valor unitário do Produto
+                    float valorUnitario = registro.getEstoque().getProduto().getValorProd();
+
+                    // Multiplica pela quantidade saída
+                    float valorTotal = valorUnitario * registro.getQuantidadeSaida();
+
+                    dto.setValorUnitario(valorUnitario);
+                    dto.setValorTotal(valorTotal);
+
+                    return dto;
+                }))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<TransacaoCompletaDTO> listarVendas() {
         LocalDate hoje = LocalDate.now();
         String dataFormatada = hoje.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 

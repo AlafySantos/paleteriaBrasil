@@ -1,6 +1,7 @@
 package engSoft.paleteriaBrasil.controllers;
 
 import engSoft.paleteriaBrasil.DTO.TransacaoCompletaDTO;
+import engSoft.paleteriaBrasil.DTO.TransacaoProdutoDTO;
 import engSoft.paleteriaBrasil.entities.TransacaoMonetaria;
 import engSoft.paleteriaBrasil.services.TransacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,11 @@ public class TransacaoController {
     }
 
     @GetMapping("/vendasDoDia")
-    public List<TransacaoCompletaDTO> listarVendasDoDia() {
+    public List<TransacaoProdutoDTO> listarVendasDoDia() {
         return transacaoService.listarVendasDoDia();
+    }
+    @GetMapping("/listarVendas")
+    public List<TransacaoCompletaDTO> listarVendas() {
+        return transacaoService.listarVendas();
     }
 }
