@@ -1,6 +1,6 @@
 package engSoft.paleteriaBrasil.controllers;
 
-import engSoft.paleteriaBrasil.entities.Fornecedor;
+import engSoft.paleteriaBrasil.DTO.ProdutoPorTipoDTO;
 import engSoft.paleteriaBrasil.entities.Produto;
 import engSoft.paleteriaBrasil.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,12 @@ public class ProdutoController {
     public List<Produto> listar(){
         return produtoService.listarTodos();
     }
+
+    @GetMapping("/listar/{tipoProduto}")
+    public List<ProdutoPorTipoDTO> listarPorTipoProduto(@PathVariable String tipoProduto) {
+        return produtoService.listarPorTipoProduto(tipoProduto);
+    }
+
 
     @PostMapping("/inserir")
     public void inserir(@RequestBody Produto produto) {

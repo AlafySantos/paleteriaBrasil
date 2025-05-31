@@ -26,6 +26,8 @@ public class EstoqueController {
         return estoqueService.listarTodos();
     }
 
+
+
     @PostMapping("/inserir")
     public ResponseEntity<Estoque> inserir(@RequestBody EstoqueCreateDTO dto) {
         Estoque novoEstoque = estoqueService.inserir(dto);

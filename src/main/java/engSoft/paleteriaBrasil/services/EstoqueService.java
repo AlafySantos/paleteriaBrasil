@@ -61,6 +61,7 @@ public class EstoqueService {
     public List<Estoque> listarTodos() {
         return estoqueRepository.findAll();
     }
+    // READ POR ID
     public Optional<Estoque> buscarPorId(Integer id) {
         return estoqueRepository.findById(id);
     }
