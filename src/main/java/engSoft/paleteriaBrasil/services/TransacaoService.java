@@ -93,6 +93,8 @@ public class TransacaoService {
 
                     dto.setIdEstoque(registro.getEstoque().getId());
                     dto.setNomeProd(registro.getEstoque().getProduto().getNomeProd());
+                    dto.setTipoProduto(registro.getEstoque().getProduto().getTipoProduto());
+                    dto.setSubtipoProduto(registro.getEstoque().getProduto().getSubtipoProduto());
                     dto.setQuantProduto(registro.getQuantidadeSaida());
 
                     // Pega valor unitário do Produto

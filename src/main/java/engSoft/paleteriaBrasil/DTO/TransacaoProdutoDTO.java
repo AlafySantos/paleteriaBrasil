@@ -16,6 +16,8 @@ public class TransacaoProdutoDTO {
 
     private Integer idEstoque;
     private String nomeProd;
+    private String tipoProduto;
+    private String subtipoProduto;
     private Integer quantProduto;
     private Float valorUnitario;
     private Float valorTotal;
