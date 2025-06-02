@@ -47,6 +47,14 @@ public class TransacaoController {
     public List<TransacaoProdutoDTO> listarVendasDoDia() {
         return transacaoService.listarVendasDoDia();
     }
+
+    @GetMapping("/listarPorData/{data}")
+    public ResponseEntity<List<TransacaoProdutoDTO>> listarPorData(@PathVariable String data) {
+        System.out.println("Data recebida: " + data);
+        List<TransacaoProdutoDTO> resultado = transacaoService.listarPorData(data);
+        return ResponseEntity.ok(resultado);
+    }
+
     @GetMapping("/listarVendas")
     public List<TransacaoCompletaDTO> listarVendas() {
         return transacaoService.listarVendas();

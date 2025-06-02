@@ -10,10 +10,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -109,6 +111,53 @@ public class TransacaoService {
                     return dto;
                 }))
                 .collect(Collectors.toList());
+    }
+
+    //Função para construir tabela Historico do Dia
+    @Transactional
+    public List<TransacaoProdutoDTO> listarPorData(String data) {
+
+        if (!StringUtils.hasText(data)) {
+            throw new IllegalArgumentException("O parâmetro 'data' é obrigatório e não pode ser nulo ou vazio.");
+        }
+
+        try {
+            DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formatoSaida = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            LocalDate dataConvertida = LocalDate.parse(data, formatoEntrada);
+            String dataFormatada = dataConvertida.format(formatoSaida);
+
+            List<TransacaoMonetaria> transacoes = transacaoRepository.findByDataWithProdutos(dataFormatada);
+
+            return transacoes.stream()
+                    .flatMap(transacao -> transacao.getRegistros().stream().map(registro -> {
+                        TransacaoProdutoDTO dto = new TransacaoProdutoDTO();
+                        dto.setId(transacao.getId());
+                        dto.setData(transacao.getData());
+                        dto.setHora(transacao.getHora());
+                        dto.setValor(transacao.getValor());
+                        dto.setFormaPagamento(transacao.getFormaPagamento());
+
+                        dto.setIdEstoque(registro.getEstoque().getId());
+                        dto.setNomeProd(registro.getEstoque().getProduto().getNomeProd());
+                        dto.setTipoProduto(registro.getEstoque().getProduto().getTipoProduto());
+                        dto.setSubtipoProduto(registro.getEstoque().getProduto().getSubtipoProduto());
+                        dto.setQuantProduto(registro.getQuantidadeSaida());
+
+                        float valorUnitario = registro.getEstoque().getProduto().getValorProd();
+                        float valorTotal = valorUnitario * registro.getQuantidadeSaida();
+
+                        dto.setValorUnitario(valorUnitario);
+                        dto.setValorTotal(valorTotal);
+
+                        return dto;
+                    }))
+                    .collect(Collectors.toList());
+
+        } catch (DateTimeParseException ex) {
+            throw new IllegalArgumentException("Formato de data inválido. O formato correto é dd-MM-yyyy.", ex);
+        }
     }
 
     @Transactional
