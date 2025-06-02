@@ -1,6 +1,7 @@
 package engSoft.paleteriaBrasil.services;
 
 import engSoft.paleteriaBrasil.DTO.ProdutoPorTipoDTO;
+import engSoft.paleteriaBrasil.DTO.ProdutoSubtipoDTO;
 import engSoft.paleteriaBrasil.entities.Produto;
 import engSoft.paleteriaBrasil.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,19 @@ public class ProdutoService {
                 })
                 .collect(Collectors.toList());
     }
+    // READ - PARA RETORNAR SUBTIPO RECEBENDO TIPO
+    public List<ProdutoSubtipoDTO> listarSubtipoPorTipo(String tipoProduto) {
+        List<Produto> produtos = produtoRepository.findProdutoByTipoProduto(tipoProduto);
+
+        // Converter lista de Produto para ProdutoSubtipoDTO
+        return produtos.stream()
+                .map(produto -> {
+                    ProdutoSubtipoDTO dto = new ProdutoSubtipoDTO();
+                    dto.setSubtipoProduto(produto.getSubtipoProduto());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
 
     // DELETE
     public void removerPorId(Integer id) {
@@ -80,6 +94,8 @@ public class ProdutoService {
             super(message);
         }
     }
+
+
 
 
 }
