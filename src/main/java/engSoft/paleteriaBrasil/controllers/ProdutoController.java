@@ -1,5 +1,6 @@
 package engSoft.paleteriaBrasil.controllers;
 
+import engSoft.paleteriaBrasil.DTO.ProdutoPorSubtipoDTO;
 import engSoft.paleteriaBrasil.DTO.ProdutoPorTipoDTO;
 import engSoft.paleteriaBrasil.DTO.ProdutoSubtipoDTO;
 import engSoft.paleteriaBrasil.entities.Produto;
@@ -31,6 +32,11 @@ public class ProdutoController {
     @GetMapping("/listar/BuscarSubtipo/{tipoProduto}")
     public List<ProdutoSubtipoDTO> listarSubtipoPorTipo(@PathVariable String tipoProduto) {
         return produtoService.listarSubtipoPorTipo(tipoProduto);
+    }
+
+    @GetMapping("/listar/ListarProduto/{subtipoProduto}")
+    public List<ProdutoPorSubtipoDTO> listarPorSubtipoProduto(@PathVariable String subtipoProduto) {
+        return produtoService.listarPorsubtipoProduto(subtipoProduto);
     }
 
 

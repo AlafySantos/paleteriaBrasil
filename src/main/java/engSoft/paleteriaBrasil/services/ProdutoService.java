@@ -1,5 +1,6 @@
 package engSoft.paleteriaBrasil.services;
 
+import engSoft.paleteriaBrasil.DTO.ProdutoPorSubtipoDTO;
 import engSoft.paleteriaBrasil.DTO.ProdutoPorTipoDTO;
 import engSoft.paleteriaBrasil.DTO.ProdutoSubtipoDTO;
 import engSoft.paleteriaBrasil.entities.Produto;
@@ -48,6 +49,24 @@ public class ProdutoService {
                 })
                 .collect(Collectors.toList());
     }
+
+    // READ POR SUBTIPO PRODUTO.
+    public List<ProdutoPorSubtipoDTO> listarPorsubtipoProduto(String subtipoProduto) {
+        List<Produto> produtos = produtoRepository.findProdutoBySubtipoProduto(subtipoProduto);
+
+        // Converter lista de Produto para ProdutoPorTipoDTO
+        return produtos.stream()
+                .map(produto -> {
+                    ProdutoPorSubtipoDTO dto = new ProdutoPorSubtipoDTO();
+                    dto.setId(produto.getId());
+                    dto.setNomeProd(produto.getNomeProd());
+                    dto.setTipoProduto(produto.getTipoProduto());
+                    dto.setSubtipoProduto(produto.getSubtipoProduto());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
     // READ - PARA RETORNAR SUBTIPO RECEBENDO TIPO
     public List<ProdutoSubtipoDTO> listarSubtipoPorTipo(String tipoProduto) {
         List<Produto> produtos = produtoRepository.findProdutoByTipoProduto(tipoProduto);
